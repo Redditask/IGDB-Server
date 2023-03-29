@@ -1,9 +1,11 @@
-const sequileze = require("../db");
+const sequelize = require("../db");
 const {DataTypes} = require("sequelize");
 
-import {Token} from "./tokenModel";
+const Token = sequelize.define("token", {
+    refreshToken: {type: DataTypes.STRING, required: true},
+});
 
-const User = sequileze.define("user", {
+const User = sequelize.define("user", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
     email: {type: DataTypes.STRING, unique: true, required: true},
     password: {type: DataTypes.STRING, required: true},
@@ -12,6 +14,8 @@ const User = sequileze.define("user", {
 });
 
 User.hasOne(Token);
+Token.belongsTo(User);
 
-module.exports = User;
-
+module.exports = {
+    Token, User
+};

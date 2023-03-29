@@ -1,14 +1,14 @@
 const bcrypt = require("bcrypt");
 const uuid = require("uuid");
 
-const User = require("../models/userModel");
+const {User} = require("../models/index");
 const mailService = require("./mailService");
 const tokenService = require("./tokenService");
 const UserDto = require("../dtos/userDtos");
 
 class UserService {
     async registration(email, password) {
-        const candidate = await User.findOne({email});
+        const candidate = await User.findOne({where: {email}});
         if (candidate) {
             throw new Error(`Пользователь с email ${email} уже существует`);
         }
