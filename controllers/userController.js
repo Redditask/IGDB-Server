@@ -9,7 +9,7 @@ class UserController {
             res.cookie("refreshToken", userData.refreshToken, {maxAge: 15*24*60*60*1000, httpOnly: true});
             return res.json(userData);
         }catch (error){
-            console.log(error);
+            next(error);
         }
     };
 
@@ -17,7 +17,7 @@ class UserController {
         try {
 
         }catch (error){
-
+            next(error);
         }
     };
 
@@ -25,7 +25,7 @@ class UserController {
         try {
 
         }catch (error){
-
+            next(error);
         }
     };
 
@@ -36,7 +36,7 @@ class UserController {
             return res.redirect("https://yandex.by/"); //просто для наглядности работы
             //return res.redirect(process.env.CLIENT_URL);
         }catch (error){
-
+            next(error);
         }
     };
 
@@ -44,7 +44,7 @@ class UserController {
         try {
 
         }catch (error){
-
+            next(error);
         }
     };
 
@@ -53,7 +53,7 @@ class UserController {
         try {
             res.json([1, 2, 3]);
         }catch (error){
-
+            next(error);
         }
     }
 }
