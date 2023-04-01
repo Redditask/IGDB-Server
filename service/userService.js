@@ -28,11 +28,10 @@ class UserService {
     };
 
     async activate(activationLink) {
-        const user = User.findOne({where: {activationLink}});
+        const user = await User.findOne({where: {activationLink}});
         if(!user){
             throw new Error("Некорректная ссылка активации");
         }else{
-            console.log(user)
             user.isActivated = true;
             await user.save();
         }

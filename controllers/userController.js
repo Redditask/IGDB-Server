@@ -33,7 +33,7 @@ class UserController {
         try {
             const activationLink = req.params.link;
             await userService.activate(activationLink);
-            return res.redirect("https://yandex.by/");
+            return res.redirect("https://yandex.by/"); //просто для наглядности работы
             //return res.redirect(process.env.CLIENT_URL);
         }catch (error){
 
