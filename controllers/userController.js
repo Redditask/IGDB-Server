@@ -1,6 +1,7 @@
 const userService = require("../service/userService");
 const {validationResult} = require("express-validator");
 const ApiError = require("../exceptions/apiError");
+const {User} = require("../models");
 
 class UserController {
     async registration(req, res, next){
@@ -54,7 +55,10 @@ class UserController {
 
     async refresh(req, res, next){
         try {
-
+            const {refreshToken} = req.cookies;
+            const userData = await userService.refresh(refreshToken);
+            res.cookie("refreshToken", userData.refreshToken, {maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true});
+            return res.json(userData);
         }catch (error){
             next(error);
         }
@@ -63,11 +67,12 @@ class UserController {
     //test
     async getUsers(req, res, next){
         try {
-            res.json([1, 2, 3]);
+            const users = userService.getUsers();
+            return res.json(users);
         }catch (error){
             next(error);
         }
-    }
+    };
 }
 
 module.exports = new UserController();
