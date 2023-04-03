@@ -1,6 +1,7 @@
 const Router = require("express").Router;
 
 const userController = require("../controllers/userController");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = new Router();
 
@@ -17,6 +18,6 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 //test
-router.get("/users", userController.getUsers);
+router.get("/users", authMiddleware, userController.getUsers);
 
 module.exports = router;
