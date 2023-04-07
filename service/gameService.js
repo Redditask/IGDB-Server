@@ -1,4 +1,5 @@
 const ApiError = require("../exceptions/apiError");
+const {findGame} = require("../utils/helpers");
 
 const hltb = require('howlongtobeat');
 const hltbService = new hltb.HowLongToBeatService();
@@ -8,8 +9,8 @@ class GameService {
         if(!gameName){
             throw ApiError.BadRequest("Введено некорректное название игры");
         }else {
-            //доработать, чтобы возвращало конкретно то, что нужно, без дополнений и т.д.
-            return await hltbService.search(gameName);
+            const results = await hltbService.search(gameName);
+            return findGame(results, gameName);
         }
     };
 }
