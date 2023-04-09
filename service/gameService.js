@@ -10,7 +10,7 @@ class GameService {
             throw ApiError.BadRequest("Введено некорректное название игры");
         }else {
             const results = await hltbService.search(gameName);
-            return findGame(results, gameName);
+            return findGame(results, gameName)[0];
         }
     };
 }
