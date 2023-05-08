@@ -13,9 +13,21 @@ const User = sequelize.define("user", {
     activationLink: {type: DataTypes.STRING},
 });
 
+const LibraryGame = sequelize.define("libraryGame", {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
+    slug: {type: DataTypes.STRING, required: true},
+});
+
+const WishlistGame = sequelize.define("wishlistGame", {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
+    slug: {type: DataTypes.STRING, required: true},
+});
+
 User.hasOne(Token);
+User.hasMany(LibraryGame);
+User.hasMany(WishlistGame);
 Token.belongsTo(User);
 
 module.exports = {
-    Token, User
+    Token, User, LibraryGame, WishlistGame
 };

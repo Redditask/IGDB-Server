@@ -19,7 +19,13 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 
-router.get("/howLongToBeat", gameController.howLongToBeat)
+router.post("/library", authMiddleware, gameController.addToLibrary);
+router.post("/wishlist", authMiddleware, gameController.addToWishlist);
+router.get("/library", authMiddleware, gameController.getLibrary);
+router.get("/wishlist", authMiddleware, gameController.getWishlist);
+router.delete("/library", authMiddleware, gameController.removeFromLibrary);
+router.delete("/wishlist", authMiddleware, gameController.removeFromWishlist);
+router.get("/howLongToBeat", gameController.howLongToBeat);
 //test
 router.get("/users", authMiddleware, userController.getUsers);
 
