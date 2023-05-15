@@ -7,6 +7,7 @@ const Token = sequelize.define("token", {
 
 const User = sequelize.define("user", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
+    username: {type: DataTypes.STRING, unique: true, required: true},
     email: {type: DataTypes.STRING, unique: true, required: true},
     password: {type: DataTypes.STRING, required: true},
     isActivated: {type: DataTypes.BOOLEAN, defaultValue: false},

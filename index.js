@@ -12,8 +12,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use("/api", router);
+app.use(express.static("public"));
+app.use("/images", express.static("images"));
 app.use(errorMiddleware);
 
 const start = async () => {
@@ -28,8 +30,13 @@ const start = async () => {
 
 start();
 
+// в gameService еще и username использовать (?)
+// где-нибудь возвращать количество игр пользователя (?)
+// проверка на активированный аккаунт при авторизации
 // подумать что возвращает post и delete library/wishlist
 // Вынести фразы в отдельный файл
 // if/else как-то получше оформить
 // Вынести некоторые фрагменты в отдельные функции (в utils)
 // Лучше обработать ошибки
+
+// функция "забыл пароль"
