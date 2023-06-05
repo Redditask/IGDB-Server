@@ -11,7 +11,7 @@ const {body} = require("express-validator");
 router.post(
     "/registration",
     body("email").isEmail(),
-    body("username").isLength({min: 5, max: 32}),
+    body("username").isLength({min: 5, max: 14}),
     body("password").isLength({min: 4, max: 32}),
     userController.registration
 );
@@ -27,7 +27,5 @@ router.get("/wishlist", authMiddleware, gameController.getWishlist);
 router.delete("/library", authMiddleware, gameController.removeFromLibrary);
 router.delete("/wishlist", authMiddleware, gameController.removeFromWishlist);
 router.get("/howLongToBeat", gameController.howLongToBeat);
-//test
-router.get("/users", authMiddleware, userController.getUsers);
 
 module.exports = router;

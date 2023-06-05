@@ -1,14 +1,13 @@
 const userService = require("../service/userService");
 const {validationResult} = require("express-validator");
 const ApiError = require("../exceptions/apiError");
-const {User} = require("../models");
 
 class UserController {
     async registration(req, res, next){
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()){
-                return next(ApiError.BadRequest("Ошибка валидации", errors.array()));
+                    return next(ApiError.BadRequest("Validation error", errors.array()));
             }else {
                 const {email, password, username} = req.body;
                 const userData = await userService.registration(email, password, username);
@@ -59,16 +58,6 @@ class UserController {
             const userData = await userService.refresh(refreshToken);
             res.cookie("refreshToken", userData.refreshToken, {maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json(userData);
-        }catch (error){
-            next(error);
-        }
-    };
-
-    //test
-    async getUsers(req, res, next){
-        try {
-            const users = await userService.getUsers();
-            return res.json(users);
         }catch (error){
             next(error);
         }
