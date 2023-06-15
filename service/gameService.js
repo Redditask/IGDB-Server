@@ -1,19 +1,8 @@
 const ApiError = require("../exceptions/apiError");
-const {findGame} = require("../utils/helpers");
 
-const hltb = require('howlongtobeat');
 const {User, LibraryGame, WishlistGame} = require("../models");
-const hltbService = new hltb.HowLongToBeatService();
 
 class GameService {
-    async howLongToBeat(gameName){
-        if(!gameName){
-            throw ApiError.BadRequest("Invalid game name");
-        }else {
-            const results = await hltbService.search(gameName);
-            return findGame(results, gameName)[0];
-        }
-    };
 
     async getLibrary(userId){
         const user = await User.findOne({where: {id: userId}});

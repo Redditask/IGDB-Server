@@ -26,6 +26,5 @@ router.get("/library", authMiddleware, gameController.getLibrary);
 router.get("/wishlist", authMiddleware, gameController.getWishlist);
 router.delete("/library", authMiddleware, gameController.removeFromLibrary);
 router.delete("/wishlist", authMiddleware, gameController.removeFromWishlist);
-router.get("/howLongToBeat", gameController.howLongToBeat);
 
 module.exports = router;
