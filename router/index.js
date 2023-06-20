@@ -22,8 +22,7 @@ router.get("/refresh", userController.refresh);
 
 router.post("/library", authMiddleware, gameController.addToLibrary);
 router.post("/wishlist", authMiddleware, gameController.addToWishlist);
-router.get("/library", authMiddleware, gameController.getLibrary);
-router.get("/wishlist", authMiddleware, gameController.getWishlist);
+router.get("/accountGames", authMiddleware, gameController.getAccountGames);
 router.delete("/library", authMiddleware, gameController.removeFromLibrary);
 router.delete("/wishlist", authMiddleware, gameController.removeFromWishlist);
 

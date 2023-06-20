@@ -4,23 +4,14 @@ const {User, LibraryGame, WishlistGame} = require("../models");
 
 class GameService {
 
-    async getLibrary(userId){
+    async getAccountGames(userId){
         const user = await User.findOne({where: {id: userId}});
         if(!user){
             throw ApiError.BadRequest("User not found");
         }else {
             const library = await LibraryGame.findAll({where: {userId}});
-            return library;
-        }
-    };
-
-    async getWishlist(userId){
-        const user = await User.findOne({where: {id: userId}});
-        if(!user){
-            throw ApiError.BadRequest("User not found");
-        }else {
             const wishlist = await WishlistGame.findAll({where: {userId}});
-            return wishlist;
+            return {...library, ...wishlist};
         }
     };
 

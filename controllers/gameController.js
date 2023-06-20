@@ -2,21 +2,11 @@ const gameService = require("../service/gameService");
 
 class GameController {
 
-    async getLibrary (req, res, next){
+    async getAccountGames (req, res, next){
         try{
             const {id} = req.user;
-            const library = await gameService.getLibrary(id);
-            return res.json(library);
-        }catch (error){
-            next(error);
-        }
-    };
-
-    async getWishlist (req, res, next){
-        try{
-            const {id} = req.user;
-            const wishlist = await gameService.getWishlist(id);
-            return res.json(wishlist);
+            const games = await gameService.getAccountGames(id);
+            return res.json(games);
         }catch (error){
             next(error);
         }
