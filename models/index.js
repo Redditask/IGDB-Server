@@ -1,5 +1,5 @@
 const sequelize = require("../db");
-const {DataTypes} = require("sequelize");
+const {DataTypes, Sequelize} = require("sequelize");
 
 const Token = sequelize.define("token", {
     refreshToken: {type: DataTypes.STRING, required: true},
@@ -17,11 +17,23 @@ const User = sequelize.define("user", {
 const LibraryGame = sequelize.define("libraryGame", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
     slug: {type: DataTypes.STRING, required: true},
+    name: {type: DataTypes.STRING, required: true},
+    released: {type: DataTypes.STRING, required: true},
+    background_image: {type: DataTypes.STRING, required: true},
+    metacritic: {type: DataTypes.INTEGER, required: true},
+    genres: {type: DataTypes.ARRAY(DataTypes.JSON), defaultValue: [], required: true},
+    parent_platforms: {type: DataTypes.ARRAY(DataTypes.JSON), defaultValue: [], required: true},
 });
 
 const WishlistGame = sequelize.define("wishlistGame", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
     slug: {type: DataTypes.STRING, required: true},
+    name: {type: DataTypes.STRING, required: true},
+    released: {type: DataTypes.STRING, required: true},
+    background_image: {type: DataTypes.STRING, required: true},
+    metacritic: {type: DataTypes.INTEGER, required: true},
+    genres: {type: DataTypes.ARRAY(DataTypes.JSON), required: true},
+    parent_platforms: {type: DataTypes.ARRAY(DataTypes.JSON), required: true},
 });
 
 User.hasOne(Token);

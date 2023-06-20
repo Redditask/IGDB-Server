@@ -15,9 +15,9 @@ class GameController {
     async addToLibrary (req, res, next){
         try{
             const {id} = req.user;
-            const {slug} = req.body;
-            const game = await gameService.addToLibrary(id, slug);
-            return res.json(game);
+            const {gameInfo} = req.body;
+            await gameService.addToLibrary(id, gameInfo);
+            return res.json({status: 200});
         }catch (error){
             next(error);
         }
@@ -26,9 +26,9 @@ class GameController {
     async addToWishlist (req, res, next){
         try{
             const {id} = req.user;
-            const {slug} = req.body;
-            const game = await gameService.addToWishlist(id, slug);
-            return res.json(game);
+            const {gameInfo} = req.body;
+            await gameService.addToWishlist(id, gameInfo);
+            return res.json({status: 200});
         }catch (error){
             next(error);
         }
@@ -38,8 +38,8 @@ class GameController {
         try{
             const {id} = req.user;
             const {slug} = req.body;
-            const game = await gameService.removeFromLibrary(id, slug);
-            return res.json(game);
+            await gameService.removeFromLibrary(id, slug);
+            return res.json({status: 200});
         }catch (error){
             next(error);
         }
@@ -49,8 +49,8 @@ class GameController {
         try{
             const {id} = req.user;
             const {slug} = req.body;
-            const game = await gameService.removeFromWishlist(id, slug);
-            return res.json(game);
+            await gameService.removeFromWishlist(id, slug);
+            return res.json({status: 200});
         }catch (error){
             next(error);
         }

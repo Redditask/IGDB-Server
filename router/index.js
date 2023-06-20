@@ -20,9 +20,9 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 
-router.post("/library", authMiddleware, gameController.addToLibrary);
-router.post("/wishlist", authMiddleware, gameController.addToWishlist);
-router.get("/accountGames", authMiddleware, gameController.getAccountGames);
+router.post("/games/library", authMiddleware, gameController.addToLibrary);
+router.post("/games/wishlist", authMiddleware, gameController.addToWishlist);
+router.get("/account/games", authMiddleware, gameController.getAccountGames);
 router.delete("/library", authMiddleware, gameController.removeFromLibrary);
 router.delete("/wishlist", authMiddleware, gameController.removeFromWishlist);
 
