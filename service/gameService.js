@@ -20,7 +20,7 @@ class GameService {
     async addToLibrary(userId, gameInfo){
         const candidate = await LibraryGame.findOne({where: {userId, slug: gameInfo.slug}});
         if (candidate) {
-            throw ApiError.BadRequest(`This game has already been added by this user`);
+            throw ApiError.BadRequest(`This game has already been added`);
         }else {
           await LibraryGame.create({
               slug: gameInfo.slug,
@@ -38,7 +38,7 @@ class GameService {
     async addToWishlist(userId, gameInfo){
         const candidate = await WishlistGame.findOne({where: {userId, slug: gameInfo.slug}});
         if (candidate) {
-            throw ApiError.BadRequest(`This game has already been added by this user`);
+            throw ApiError.BadRequest(`This game has already been added`);
         }else {
             await WishlistGame.create({
                 slug: gameInfo.slug,
@@ -56,7 +56,7 @@ class GameService {
     async removeFromLibrary(userId, slug){
         const candidate = await LibraryGame.findOne({where: {userId, slug}});
         if (!candidate) {
-            throw ApiError.BadRequest(`This game is not added for this user`);
+            throw ApiError.BadRequest(`This game is not added`);
         }else {
             await LibraryGame.destroy({where: {slug, userId}});
         }
@@ -65,10 +65,16 @@ class GameService {
     async removeFromWishlist(userId, slug){
         const candidate = await WishlistGame.findOne({where: {userId, slug}});
         if (!candidate) {
-            throw ApiError.BadRequest(`This game is not added for this user`);
+            throw ApiError.BadRequest(`This game is not added`);
         }else {
             await WishlistGame.destroy({where: {slug, userId}});
         }
+    };
+
+    async isAddedToAccount(userId, slug) {
+        const library = await LibraryGame.findOne({where: {userId, slug}});
+        const wishlist = await WishlistGame.findOne({where: {userId, slug}});
+        return {library: !!library, wishlist: !!wishlist};
     };
 }
 
