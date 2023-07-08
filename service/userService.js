@@ -22,7 +22,7 @@ class UserService {
             const activationLink = uuid.v4();
 
             const user = await User.create({email, username, password: hashPassword, activationLink});
-            await mailService.sendActivation(email, `${process.env.API_URL}/api/activate/${activationLink}`);
+            await mailService.sendActivation(email, `${process.env.CLIENT_URL}/activate/${activationLink}`);
 
             const userDto = new UserDto(user);
             const tokens = tokenService.generateTokens({...userDto});
@@ -39,6 +39,7 @@ class UserService {
         }else{
             user.isActivated = true;
             await user.save();
+            return {message: `${user.username}, your account is activated!`};
         }
     };
 
