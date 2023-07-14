@@ -27,4 +27,7 @@ router.get("/check/:slug", authMiddleware, gameController.isAddedToAccount);
 router.delete("/library/:slug", authMiddleware, gameController.removeFromLibrary);
 router.delete("/wishlist/:slug", authMiddleware, gameController.removeFromWishlist);
 
+router.post("/review/:slug", authMiddleware, userController.addReview);
+router.get("/reviews/:slug", gameController.getReviews);
+
 module.exports = router;

@@ -6,6 +6,7 @@ const mailService = require("./mailService");
 const tokenService = require("./tokenService");
 const UserDto = require("../dtos/userDtos");
 const ApiError = require("../exceptions/apiError");
+const {GameReview} = require("../models");
 
 class UserService {
     async registration(email, password, username) {
@@ -84,6 +85,16 @@ class UserService {
 
                 return {...tokens, user: userDto};
             }
+        }
+    };
+
+    async addReview(slug, username, text){
+        if (!!slug && !!username && !!text) {
+            await GameReview.create({
+                slug, username, text
+            });
+        } else {
+            throw ApiError.BadRequest("Incorrect review");
         }
     };
 }

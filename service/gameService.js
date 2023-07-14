@@ -1,6 +1,6 @@
 const ApiError = require("../exceptions/apiError");
 
-const {User, LibraryGame, WishlistGame} = require("../models");
+const {User, LibraryGame, WishlistGame, GameReview} = require("../models");
 
 class GameService {
 
@@ -75,6 +75,11 @@ class GameService {
         const library = await LibraryGame.findOne({where: {userId, slug}});
         const wishlist = await WishlistGame.findOne({where: {userId, slug}});
         return {library: !!library, wishlist: !!wishlist};
+    };
+
+    async getReviews(slug){
+        const result = await GameReview.findAll({where: {slug}});
+        return {reviews: result};
     };
 }
 

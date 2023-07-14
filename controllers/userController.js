@@ -61,6 +61,18 @@ class UserController {
             next(error);
         }
     };
+
+    async addReview(req, res, next) {
+        try {
+            const {username} = req.user;
+            const slug = req.params.slug;
+            const {text} = req.body;
+            await userService.addReview(slug, username, text);
+            return res.json({status: 200, message: "Review added!"});
+        }catch (error){
+            next(error);
+        }
+    };
 }
 
 module.exports = new UserController();

@@ -1,4 +1,5 @@
 const gameService = require("../service/gameService");
+const e = require("express");
 
 class GameController {
 
@@ -66,6 +67,16 @@ class GameController {
           next(error)
       }
     };
+
+    async getReviews (req, res, next){
+        try{
+            const slug = req.params.slug;
+            const result = await gameService.getReviews(slug);
+            return res.json(result);
+        }catch (error){
+            next(error);
+        }
+    }
 }
 
 module.exports = new GameController();

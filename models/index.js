@@ -33,14 +33,21 @@ const WishlistGame = sequelize.define("wishlistGame", {
     background_image: {type: DataTypes.STRING, required: true},
     metacritic: {type: DataTypes.INTEGER, required: true},
     genres: {type: DataTypes.ARRAY(DataTypes.JSON), required: true},
-    parent_platforms: {type: DataTypes.ARRAY(DataTypes.JSON), required: true},
+    parent_platforms: {type: DataTypes.ARRAY(DataTypes.JSON), required: true}});
+
+const GameReview = sequelize.define("gameReview", {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
+    slug: {type: DataTypes.STRING, required: true},
+    username: {type: DataTypes.STRING, required: true},
+    text: {type: DataTypes.STRING, required: true}
 });
 
 User.hasOne(Token);
 User.hasMany(LibraryGame);
 User.hasMany(WishlistGame);
+
 Token.belongsTo(User);
 
 module.exports = {
-    Token, User, LibraryGame, WishlistGame
+    Token, User, LibraryGame, WishlistGame, GameReview
 };
