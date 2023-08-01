@@ -77,9 +77,19 @@ class GameService {
         return {library: !!library, wishlist: !!wishlist};
     };
 
-    async getReviews(slug){
+    async getReviews(slug, username){
         const result = await GameReview.findAll({where: {slug}});
-        return {reviews: result};
+
+        if (!!username.length) {
+            const userReview = result.find((review) => review.username === username);
+            const otherReviews = result.filter((review) => review.username !== username);
+
+            return userReview
+                ? {reviews: [userReview , ...otherReviews], isUserReviewThere: true}
+                : {reviews: otherReviews, isUserReviewThere: false};
+        }
+
+        return {reviews: result, isUserReviewThere: false};
     };
 }
 

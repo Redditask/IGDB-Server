@@ -39,7 +39,7 @@ const GameReview = sequelize.define("gameReview", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
     slug: {type: DataTypes.STRING, required: true},
     username: {type: DataTypes.STRING, required: true},
-    text: {type: DataTypes.STRING, required: true}
+    text: {type: DataTypes.TEXT, required: true}
 });
 
 User.hasOne(Token);
