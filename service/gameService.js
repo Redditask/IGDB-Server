@@ -4,42 +4,41 @@ const {User, LibraryGame, WishlistGame, GameReview} = require("../models");
 
 class GameService {
 
-    async getAccountGames(userId){
+    async getAccountGames(userId) {
         const user = await User.findOne({where: {id: userId}});
-        if(!user){
+        if (!user) {
             throw ApiError.BadRequest("User not found");
-        }else {
+        } else {
             const library = await LibraryGame.findAll({where: {userId}});
-            console.log(library)
             const wishlist = await WishlistGame.findAll({where: {userId}});
-            console.log(wishlist)
+
             return {library: library, wishlist: wishlist};
         }
     };
 
-    async addToLibrary(userId, gameInfo){
+    async addToLibrary(userId, gameInfo) {
         const candidate = await LibraryGame.findOne({where: {userId, slug: gameInfo.slug}});
         if (candidate) {
             throw ApiError.BadRequest(`This game has already been added`);
-        }else {
-          await LibraryGame.create({
-              slug: gameInfo.slug,
-              name: gameInfo.name,
-              released: gameInfo.released,
-              background_image: gameInfo.background_image,
-              metacritic: gameInfo.metacritic,
-              genres: gameInfo.genres,
-              parent_platforms: gameInfo.parent_platforms,
-              userId: userId,
-          });
+        } else {
+            await LibraryGame.create({
+                slug: gameInfo.slug,
+                name: gameInfo.name,
+                released: gameInfo.released,
+                background_image: gameInfo.background_image,
+                metacritic: gameInfo.metacritic,
+                genres: gameInfo.genres,
+                parent_platforms: gameInfo.parent_platforms,
+                userId: userId,
+            });
         }
     };
 
-    async addToWishlist(userId, gameInfo){
+    async addToWishlist(userId, gameInfo) {
         const candidate = await WishlistGame.findOne({where: {userId, slug: gameInfo.slug}});
         if (candidate) {
             throw ApiError.BadRequest(`This game has already been added`);
-        }else {
+        } else {
             await WishlistGame.create({
                 slug: gameInfo.slug,
                 name: gameInfo.name,
@@ -53,20 +52,20 @@ class GameService {
         }
     };
 
-    async removeFromLibrary(userId, slug){
+    async removeFromLibrary(userId, slug) {
         const candidate = await LibraryGame.findOne({where: {userId, slug}});
         if (!candidate) {
             throw ApiError.BadRequest(`This game is not added`);
-        }else {
+        } else {
             await LibraryGame.destroy({where: {slug, userId}});
         }
     };
 
-    async removeFromWishlist(userId, slug){
+    async removeFromWishlist(userId, slug) {
         const candidate = await WishlistGame.findOne({where: {userId, slug}});
         if (!candidate) {
             throw ApiError.BadRequest(`This game is not added`);
-        }else {
+        } else {
             await WishlistGame.destroy({where: {slug, userId}});
         }
     };
@@ -77,19 +76,49 @@ class GameService {
         return {library: !!library, wishlist: !!wishlist};
     };
 
-    async getReviews(slug, username){
+    async getReviews(slug, username) {
         const result = await GameReview.findAll({where: {slug}});
 
-        if (!!username.length) {
-            const userReview = result.find((review) => review.username === username);
-            const otherReviews = result.filter((review) => review.username !== username);
+        let userReview = result.find((review) => review.username === username);
+        const otherReviews = result.filter((review) => review.username !== username);
 
-            return userReview
-                ? {reviews: [userReview , ...otherReviews], isUserReviewThere: true}
-                : {reviews: otherReviews, isUserReviewThere: false};
+        if (userReview) {
+            userReview.dataValues = {
+                ...userReview.dataValues,
+                likedUsers: userReview.likedUsers.length,
+                dislikedUsers: userReview.dislikedUsers.length,
+                userReaction: "null",
+            };
         }
 
-        return {reviews: result, isUserReviewThere: false};
+        for (let review of otherReviews) {
+            if (review.likedUsers.includes(username)) {
+                review.dataValues = {
+                    ...review.dataValues,
+                    likedUsers: review.likedUsers.length,
+                    dislikedUsers: review.dislikedUsers.length,
+                    userReaction: "like",
+                };
+            } else if (review.dislikedUsers.includes(username)) {
+                review.dataValues = {
+                    ...review.dataValues,
+                    likedUsers: review.likedUsers.length,
+                    dislikedUsers: review.dislikedUsers.length,
+                    userReaction: "dislike",
+                };
+            } else {
+                review.dataValues = {
+                    ...review.dataValues,
+                    likedUsers: review.likedUsers.length,
+                    dislikedUsers: review.dislikedUsers.length,
+                    userReaction: "null",
+                };
+            }
+        }
+
+        return userReview
+            ? {reviews: [userReview, ...otherReviews], isUserReviewThere: true}
+            : {reviews: otherReviews, isUserReviewThere: false};
     };
 }
 

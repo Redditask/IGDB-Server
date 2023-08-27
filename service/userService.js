@@ -91,11 +91,67 @@ class UserService {
     async addReview(slug, username, text){
         if (!!slug && !!username && !!text) {
             await GameReview.create({
-                slug, username, text
+                slug,
+                username,
+                text,
+                likedUsers: [],
+                dislikedUsers: []
             });
         } else {
             throw ApiError.BadRequest("Incorrect review");
         }
+    };
+
+    async deleteReview(reviewId){
+        await GameReview.destroy({where: {id: reviewId}});
+    };
+
+    async unLikeReview(reviewId, username) {
+        const review = await GameReview.findOne({where: {id: reviewId}});
+
+        if (review.likedUsers.includes(username)) {
+            const updatedLikedUsers = review.likedUsers.filter((likedUser) => likedUser !== username);
+
+            await review.update({likedUsers: [...updatedLikedUsers]});
+        }
+    };
+
+    async unDislikeReview(reviewId, username){
+        const review = await GameReview.findOne({where: {id: reviewId}});
+
+        if (review.dislikedUsers.includes(username)) {
+            const updatedDislikedUsers = review.dislikedUsers.filter((dislikedUser) => dislikedUser !== username);
+
+            await review.update({dislikedUsers: [...updatedDislikedUsers]});
+        }
+    };
+
+    async likeReview(reviewId, username){
+        const review = await GameReview.findOne({where: {id: reviewId}});
+
+        if (review) {
+            if (review.likedUsers.includes(username)) {
+                this.unLikeReview(reviewId, username);
+            } else {
+                this.unDislikeReview(reviewId, username);
+
+                await review.update({likedUsers: [...review.likedUsers, username]});
+            }
+        }else throw ApiError.BadRequest(`Review not found`);
+    };
+
+    async dislikeReview(reviewId, username){
+        const review = await GameReview.findOne({where: {id: reviewId}});
+
+        if (review) {
+            if (review.dislikedUsers.includes(username)) {
+                this.unDislikeReview(reviewId, username);
+            } else {
+                await this.unLikeReview(reviewId, username);
+
+                await review.update({dislikedUsers: [...review.dislikedUsers, username]});
+            }
+        }else throw ApiError.BadRequest(`Review not found`);
     };
 }
 

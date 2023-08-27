@@ -28,6 +28,10 @@ router.delete("/library/:slug", authMiddleware, gameController.removeFromLibrary
 router.delete("/wishlist/:slug", authMiddleware, gameController.removeFromWishlist);
 
 router.post("/review/:slug", authMiddleware, userController.addReview);
+router.delete("/review/:id", authMiddleware, userController.deleteReview);
 router.get("/reviews/:slug", gameController.getReviews);
+
+router.post("/review/like/:id", authMiddleware, userController.likeReview);
+router.post("/review/dislike/:id", authMiddleware, userController.dislikeReview);
 
 module.exports = router;
