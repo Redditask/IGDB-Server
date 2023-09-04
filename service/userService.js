@@ -102,8 +102,22 @@ class UserService {
         }
     };
 
+    async editReview(reviewId, newText){
+        const review = await GameReview.findOne({where: {id: reviewId}});
+
+        if (review) {
+            await review.update({text: newText});
+        } else {
+            throw ApiError.BadRequest("Incorrect review");
+        }
+    };
+
     async deleteReview(reviewId){
-        await GameReview.destroy({where: {id: reviewId}});
+        if (reviewId) {
+            await GameReview.destroy({where: {id: reviewId}});
+        } else {
+            throw ApiError.BadRequest("Incorrect review");
+        }
     };
 
     async unLikeReview(reviewId, username) {

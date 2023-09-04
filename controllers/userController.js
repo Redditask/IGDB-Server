@@ -84,6 +84,17 @@ class UserController {
         }
     };
 
+    async editReview(req, res, next){
+        try {
+            const reviewId = req.params.id;
+            const {newText} = req.body;
+            await userService.editReview(reviewId, newText);
+            return res.json({status: 200, message: "Review updated!"});
+        }catch (error) {
+            next(error);
+        }
+    };
+
     async likeReview(req, res, next) {
         try {
             const reviewId = req.params.id;

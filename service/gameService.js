@@ -1,6 +1,7 @@
 const ApiError = require("../exceptions/apiError");
 
 const {User, LibraryGame, WishlistGame, GameReview} = require("../models");
+const {mostLikedSort, latestSort} = require("../utils");
 
 class GameService {
 
@@ -71,13 +72,16 @@ class GameService {
     };
 
     async isAddedToAccount(userId, slug) {
-        const library = await LibraryGame.findOne({where: {userId, slug}});
-        const wishlist = await WishlistGame.findOne({where: {userId, slug}});
-        return {library: !!library, wishlist: !!wishlist};
+        if(userId) {
+            const library = await LibraryGame.findOne({where: {userId, slug}});
+            const wishlist = await WishlistGame.findOne({where: {userId, slug}});
+            return {library: !!library, wishlist: !!wishlist};
+        } else return {library: false, wishlist: false};
     };
 
-    async getReviews(slug, username) {
+    async getReviews(slug, username, sortOption) {
         const result = await GameReview.findAll({where: {slug}});
+        let userReviewId = 0;
 
         let userReview = result.find((review) => review.username === username);
         const otherReviews = result.filter((review) => review.username !== username);
@@ -89,6 +93,8 @@ class GameService {
                 dislikedUsers: userReview.dislikedUsers.length,
                 userReaction: "null",
             };
+
+            userReviewId = userReview.id;
         }
 
         for (let review of otherReviews) {
@@ -116,9 +122,13 @@ class GameService {
             }
         }
 
+        if (sortOption === "mostLiked") {
+            otherReviews.sort(mostLikedSort);
+        } else otherReviews.sort(latestSort);
+
         return userReview
-            ? {reviews: [userReview, ...otherReviews], isUserReviewThere: true}
-            : {reviews: otherReviews, isUserReviewThere: false};
+            ? {reviews: [userReview, ...otherReviews], userReviewId}
+            : {reviews: otherReviews, userReviewId};
     };
 }
 
