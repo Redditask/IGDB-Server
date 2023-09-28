@@ -58,13 +58,9 @@ class GameController {
 
     async isAddedToAccount (req, res, next){
       try{
-          let userId = 0;
-          if (req.user) {
-              const {id} = req.user;
-              userId = id;
-          }
+          const {id} = req.user;
           const slug = req.params.slug;
-          const result = await gameService.isAddedToAccount(userId, slug);
+          const result = await gameService.isAddedToAccount(id, slug);
           return res.json(result);
       }catch (error){
           next(error)

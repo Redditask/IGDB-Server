@@ -22,8 +22,7 @@ router.get("/refresh", userController.refresh);
 
 router.post("/library", authMiddleware, gameController.addToLibrary);
 router.post("/wishlist", authMiddleware, gameController.addToWishlist);
-router.get("/account/games", authMiddleware, gameController.getAccountGames);
-router.get("/check/:slug", gameController.isAddedToAccount);
+router.get("/check/:slug", authMiddleware, gameController.isAddedToAccount);
 router.delete("/library/:slug", authMiddleware, gameController.removeFromLibrary);
 router.delete("/wishlist/:slug", authMiddleware, gameController.removeFromWishlist);
 
@@ -31,6 +30,10 @@ router.post("/review/:slug", authMiddleware, userController.addReview);
 router.delete("/review/:id", authMiddleware, userController.deleteReview);
 router.put("/review/:id", authMiddleware, userController.editReview);
 router.get("/reviews/:slug", gameController.getReviews);
+
+router.get("/account/games", authMiddleware, gameController.getAccountGames);
+router.get("/account/info/:username", userController.getAccountInfo);
+router.put("/account/info/platforms", authMiddleware, userController.updateUserPlatforms);
 
 router.post("/review/like/:id", authMiddleware, userController.likeReview);
 router.post("/review/dislike/:id", authMiddleware, userController.dislikeReview);

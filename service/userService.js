@@ -6,7 +6,7 @@ const mailService = require("./mailService");
 const tokenService = require("./tokenService");
 const UserDto = require("../dtos/userDtos");
 const ApiError = require("../exceptions/apiError");
-const {GameReview} = require("../models");
+const {GameReview, LibraryGame, WishlistGame} = require("../models");
 
 class UserService {
     async registration(email, password, username) {
@@ -166,6 +166,32 @@ class UserService {
                 await review.update({dislikedUsers: [...review.dislikedUsers, username]});
             }
         }else throw ApiError.BadRequest(`Review not found`);
+    };
+
+    async getAccountInfo(username){
+        const user = await User.findOne({where: {username}});
+        if (user) {
+            const reviewsCount = (await GameReview.findAll({where: {username}})).length;
+            const libraryCount = (await LibraryGame.findAll({where: {userId: user.id}})).length;
+            const wishlistCount = (await WishlistGame.findAll({where: {userId: user.id}})).length;
+            const registrationDate = user.createdAt;
+
+            return {
+                username: user.username,
+                reviewsCount,
+                libraryCount,
+                wishlistCount,
+                registrationDate,
+                platforms: user.platforms
+            };
+        }else throw ApiError.BadRequest(`User not found`);
+    };
+
+    async updateUserPlatforms(username, platforms){
+        const user = await User.findOne({where: {username}});
+        if (user) {
+            user.update({platforms: [...platforms]});
+        }else throw ApiError.BadRequest(`User not found`);
     };
 }
 

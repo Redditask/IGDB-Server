@@ -116,6 +116,27 @@ class UserController {
             next(error);
         }
     };
+
+    async getAccountInfo(req, res, next) {
+        try {
+            const user = req.params.username;
+            const result = await userService.getAccountInfo(user);
+            return res.json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async updateUserPlatforms(req, res, next) {
+        try {
+            const {username} = req.user;
+            const {platforms} = req.body;
+            await userService.updateUserPlatforms(username, platforms);
+            return res.json({status: 200, message: "Platforms updated!"});
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new UserController();

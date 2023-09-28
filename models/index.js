@@ -12,6 +12,7 @@ const User = sequelize.define("user", {
     password: {type: DataTypes.STRING, required: true},
     isActivated: {type: DataTypes.BOOLEAN, defaultValue: false},
     activationLink: {type: DataTypes.STRING},
+    platforms: {type: DataTypes.ARRAY(DataTypes.JSON), defaultValue: [], required: true}
 });
 
 const LibraryGame = sequelize.define("libraryGame", {
