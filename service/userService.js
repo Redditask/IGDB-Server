@@ -88,12 +88,13 @@ class UserService {
         }
     };
 
-    async addReview(slug, username, text){
+    async addReview(slug, username, text, rating){
         if (!!slug && !!username && !!text) {
             await GameReview.create({
                 slug,
                 username,
                 text,
+                rating,
                 likedUsers: [],
                 dislikedUsers: []
             });
@@ -102,11 +103,11 @@ class UserService {
         }
     };
 
-    async editReview(reviewId, newText){
+    async editReview(reviewId, newText, newRating){
         const review = await GameReview.findOne({where: {id: reviewId}});
 
         if (review) {
-            await review.update({text: newText});
+            await review.update({text: newText, rating: newRating});
         } else {
             throw ApiError.BadRequest("Incorrect review");
         }
@@ -192,6 +193,16 @@ class UserService {
         if (user) {
             user.update({platforms: [...platforms]});
         }else throw ApiError.BadRequest(`User not found`);
+    };
+
+    async getUserReviews(username) {
+        if (username) {
+            const results = await GameReview.findAll({where: {username}});
+            const medianRating = results.reduce((sum, currentReview) =>
+                    (sum + currentReview.dataValues.rating) / 2, 0);
+            return {reviews: results, medianRating: medianRating.toFixed(2)};
+        }
+        else return {reviews: [], medianRating: 0};
     };
 }
 

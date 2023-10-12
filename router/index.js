@@ -34,6 +34,7 @@ router.get("/reviews/:slug", gameController.getReviews);
 router.get("/account/games", authMiddleware, gameController.getAccountGames);
 router.get("/account/info/:username", userController.getAccountInfo);
 router.put("/account/info/platforms", authMiddleware, userController.updateUserPlatforms);
+router.get("/account/reviews/:username", userController.getUserReviews);
 
 router.post("/review/like/:id", authMiddleware, userController.likeReview);
 router.post("/review/dislike/:id", authMiddleware, userController.dislikeReview);

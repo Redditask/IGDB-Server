@@ -41,6 +41,7 @@ const GameReview = sequelize.define("gameReview", {
     slug: {type: DataTypes.STRING, required: true},
     username: {type: DataTypes.STRING, required: true},
     text: {type: DataTypes.TEXT, required: true},
+    rating: {type: DataTypes.INTEGER, required: true},
     likedUsers: {type: DataTypes.ARRAY(DataTypes.STRING), required: true},
     dislikedUsers: {type: DataTypes.ARRAY(DataTypes.STRING), required: true}
 });

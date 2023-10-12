@@ -66,8 +66,8 @@ class UserController {
         try {
             const {username} = req.user;
             const slug = req.params.slug;
-            const {text} = req.body;
-            await userService.addReview(slug, username, text);
+            const {text, rating} = req.body;
+            await userService.addReview(slug, username, text, rating);
             return res.json({status: 200, message: "Review added!"});
         } catch (error) {
             next(error);
@@ -87,8 +87,8 @@ class UserController {
     async editReview(req, res, next){
         try {
             const reviewId = req.params.id;
-            const {newText} = req.body;
-            await userService.editReview(reviewId, newText);
+            const {newText, newRating} = req.body;
+            await userService.editReview(reviewId, newText, newRating);
             return res.json({status: 200, message: "Review updated!"});
         }catch (error) {
             next(error);
@@ -125,7 +125,7 @@ class UserController {
         } catch (error) {
             next(error);
         }
-    }
+    };
 
     async updateUserPlatforms(req, res, next) {
         try {
@@ -136,7 +136,17 @@ class UserController {
         } catch (error) {
             next(error);
         }
-    }
+    };
+
+    async getUserReviews(req, res, next) {
+        try {
+            const username = req.params.username;
+            const result = await userService.getUserReviews(username);
+            return res.json(result);
+        }catch (error) {
+            next(error);
+        }
+    };
 }
 
 module.exports = new UserController();
