@@ -17,7 +17,17 @@ const latestSort = (review1, review2) => {
     return reviewDate2 - reviewDate1;
 };
 
+const ascendingRatingSort = (review1, review2) => {
+  return review1.rating - review2.rating;
+};
+
+const descendingRatingSort = (review1, review2) => {
+    return review2.rating - review1.rating;
+};
+
 module.exports = {
     mostLikedSort,
-    latestSort
+    latestSort,
+    ascendingRatingSort,
+    descendingRatingSort
 };

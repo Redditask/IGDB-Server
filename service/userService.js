@@ -7,6 +7,7 @@ const tokenService = require("./tokenService");
 const UserDto = require("../dtos/userDtos");
 const ApiError = require("../exceptions/apiError");
 const {GameReview, LibraryGame, WishlistGame} = require("../models");
+const {mostLikedSort, latestSort, ascendingRatingSort, descendingRatingSort} = require("../utils");
 
 class UserService {
     async registration(email, password, username) {
@@ -195,14 +196,58 @@ class UserService {
         }else throw ApiError.BadRequest(`User not found`);
     };
 
-    async getUserReviews(username) {
+    async getUserReviews(username, viewer, sortOption) {
         if (username) {
             const results = await GameReview.findAll({where: {username}});
-            const medianRating = results.reduce((sum, currentReview) =>
-                    (sum + currentReview.dataValues.rating) / 2, 0);
-            return {reviews: results, medianRating: medianRating.toFixed(2)};
+            if (results.length) {
+                let allRatings = 0;
+
+                results.forEach((review) => {
+                   allRatings += review.dataValues.rating;
+                });
+
+                const medianRating = allRatings/results.length;
+
+                for (let review of results) {
+                    if (review.likedUsers.includes(viewer)) {
+                        review.dataValues = {
+                            ...review.dataValues,
+                            likedUsers: review.likedUsers.length,
+                            dislikedUsers: review.dislikedUsers.length,
+                            userReaction: "like",
+                        };
+                    } else if (review.dislikedUsers.includes(viewer)) {
+                        review.dataValues = {
+                            ...review.dataValues,
+                            likedUsers: review.likedUsers.length,
+                            dislikedUsers: review.dislikedUsers.length,
+                            userReaction: "dislike",
+                        };
+                    } else {
+                        review.dataValues = {
+                            ...review.dataValues,
+                            likedUsers: review.likedUsers.length,
+                            dislikedUsers: review.dislikedUsers.length,
+                            userReaction: "null",
+                        };
+                    }
+                }
+
+                if (sortOption === "mostLiked") {
+                    results.sort(mostLikedSort);
+                } else if (sortOption === "latest") {
+                    results.sort(latestSort);
+                } else if (sortOption === "ascendingRating") {
+                    results.sort(ascendingRatingSort);
+                } else results.sort(descendingRatingSort);
+
+                return {reviews: results, medianRating: medianRating.toFixed(2)};
+            }
+
+            return {reviews: [], medianRating: 0};
         }
-        else return {reviews: [], medianRating: 0};
+
+        return {reviews: [], medianRating: 0};
     };
 }
 

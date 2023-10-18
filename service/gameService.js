@@ -1,7 +1,7 @@
 const ApiError = require("../exceptions/apiError");
 
 const {User, LibraryGame, WishlistGame, GameReview} = require("../models");
-const {mostLikedSort, latestSort} = require("../utils");
+const {mostLikedSort, latestSort, ascendingRatingSort, descendingRatingSort} = require("../utils");
 
 class GameService {
 
@@ -124,7 +124,11 @@ class GameService {
 
         if (sortOption === "mostLiked") {
             otherReviews.sort(mostLikedSort);
-        } else otherReviews.sort(latestSort);
+        } else if (sortOption === "latest") {
+            otherReviews.sort(latestSort);
+        } else if (sortOption === "ascendingRating") {
+            otherReviews.sort(ascendingRatingSort);
+        } else otherReviews.sort(descendingRatingSort);
 
         return userReview
             ? {reviews: [userReview, ...otherReviews], userReviewId}

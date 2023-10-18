@@ -141,7 +141,9 @@ class UserController {
     async getUserReviews(req, res, next) {
         try {
             const username = req.params.username;
-            const result = await userService.getUserReviews(username);
+            const viewer = req.query.viewer;
+            const sortOption = req.query.sortOption;
+            const result = await userService.getUserReviews(username, viewer, sortOption);
             return res.json(result);
         }catch (error) {
             next(error);
