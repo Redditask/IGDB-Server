@@ -81,7 +81,15 @@ class GameService {
 
     async getReviews(slug, username, sortOption) {
         const result = await GameReview.findAll({where: {slug}});
+
         let userReviewId = 0;
+        let allRatings = 0;
+
+        result.forEach((review) => {
+            allRatings += review.dataValues.rating;
+        });
+
+        const medianRating = allRatings/result.length;
 
         let userReview = result.find((review) => review.username === username);
         const otherReviews = result.filter((review) => review.username !== username);
@@ -131,8 +139,8 @@ class GameService {
         } else otherReviews.sort(descendingRatingSort);
 
         return userReview
-            ? {reviews: [userReview, ...otherReviews], userReviewId}
-            : {reviews: otherReviews, userReviewId};
+            ? {reviews: [userReview, ...otherReviews], userReviewId, medianRating: medianRating.toFixed(2)}
+            : {reviews: otherReviews, userReviewId, medianRating: medianRating.toFixed(2)};
     };
 }
 

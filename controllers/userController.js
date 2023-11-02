@@ -149,6 +149,18 @@ class UserController {
             next(error);
         }
     };
+
+    async updateUserIcon(req, res, next){
+        try {
+            const {username} = req.user;
+            const {file} = req.body;
+            //console.log(req.file)
+            await userService.updateUserIcon(file, username);
+            return res.json({status: 200, message: "User icon updated!"});
+        }catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new UserController();

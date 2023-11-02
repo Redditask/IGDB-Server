@@ -249,6 +249,15 @@ class UserService {
 
         return {reviews: [], medianRating: 0};
     };
+
+    async updateUserIcon(file, username) {
+        if (!file) return ApiError.BadRequest(`File not found`);
+
+        const user = User.findOne({where: {username}});
+        if (user){
+
+        } else return ApiError.BadRequest(`User not found`);
+    };
 }
 
 module.exports = new UserService();
