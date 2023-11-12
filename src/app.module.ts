@@ -3,6 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { UserModule } from './user/user.module';
+import { ReviewModule } from './review/review.module';
+import { LibraryGameModule } from './library-game/library-game.module';
+import { WishlistGameModule } from './wishlist-game/wishlist-game.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -20,6 +25,11 @@ import { TypeOrmModule } from "@nestjs/typeorm";
       }),
       inject: [ConfigService],
     }),
+    UserModule,
+    ReviewModule,
+    LibraryGameModule,
+    WishlistGameModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

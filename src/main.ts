@@ -6,3 +6,10 @@ async function bootstrap() {
   await app.listen(5000);
 }
 bootstrap();
+
+//  updateDto разобраться
+
+// ToDo:
+//  больше валидаторов добавить
+//  platforms в user entity зарефакторить
+//  ^ аналогично с genres, parent_platforms в games
