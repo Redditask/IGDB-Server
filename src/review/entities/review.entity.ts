@@ -1,6 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { User } from "../../user/entities/user.entity";
-import { JoinColumn } from "typeorm/browser";
 
 @Entity()
 export class Review {
@@ -20,9 +19,9 @@ export class Review {
   @Column()
   rating: number;
 
-  @Column()
-  likedUsers: string [];
+  @Column({array: true})
+  likedUsers: string;
 
-  @Column()
-  dislikedUsers: string [];
+  @Column({array: true})
+  dislikedUsers: string;
 }

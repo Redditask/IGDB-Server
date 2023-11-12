@@ -20,7 +20,7 @@ import { TokenModule } from './token/token.module';
         username: configService.get("DB_USERNAME"),
         password: configService.get("DB_PASSWORD"),
         database: configService.get("DB_NAME"),
-        //synchronize: true (?),
+        synchronize: true,
         entities: [__dirname + "/**/*.entity{.js, .ts}"],
       }),
       inject: [ConfigService],

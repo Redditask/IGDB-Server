@@ -32,8 +32,8 @@ export class User {
   @Column()
   activationLink: string;
 
-  @Column()
-  platforms: JSON [];
+  @Column({type: "json", array: true})
+  platforms: JSON;
 
   @CreateDateColumn()
   createdAt: Date;

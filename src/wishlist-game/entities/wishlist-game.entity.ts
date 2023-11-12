@@ -1,6 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { User } from "../../user/entities/user.entity";
-import { JoinColumn } from "typeorm/browser";
 
 @Entity()
 export class WishlistGame {
@@ -26,9 +25,9 @@ export class WishlistGame {
   @Column()
   metacritic: number;
 
-  @Column()
-  genres: JSON [];
+  @Column({type: "json", array: true})
+  genres: JSON;
 
-  @Column()
-  parent_platforms: JSON [];
+  @Column({type: "json", array: true})
+  parent_platforms: JSON;
 }

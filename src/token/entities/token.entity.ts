@@ -1,6 +1,5 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { User } from "../../user/entities/user.entity";
-import { JoinColumn } from "typeorm/browser";
 
 @Entity()
 export class Token {
