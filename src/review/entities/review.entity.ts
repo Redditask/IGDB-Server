@@ -1,11 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
+import { Column, Entity, ManyToOne, JoinColumn } from "typeorm";
 import { User } from "../../user/entities/user.entity";
+import { BaseEntity } from "../../database/entities/baseEntity";
 
 @Entity()
-export class Review {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Review extends BaseEntity<Review>{
   @ManyToOne(() => User, (user) => user.review)
   @JoinColumn({name: "username"})
   user: User;

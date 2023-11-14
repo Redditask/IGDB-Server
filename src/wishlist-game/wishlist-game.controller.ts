@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { WishlistGameService } from './wishlist-game.service';
 import { CreateWishlistGameDto } from './dto/create-wishlist-game.dto';
-import { UpdateWishlistGameDto } from './dto/update-wishlist-game.dto';
+import { CustomResponseDto } from "../database/dto/custom-response.dto";
+import { WishlistGame } from "./entities/wishlist-game.entity";
 
-@Controller('wishlist-game')
+@Controller('wishlist-games')
 export class WishlistGameController {
   constructor(private readonly wishlistGameService: WishlistGameService) {}
 
-  @Post()
-  create(@Body() createWishlistGameDto: CreateWishlistGameDto) {
-    return this.wishlistGameService.create(createWishlistGameDto);
-  }
+  @Post('user/:id')
+  async create(
+    @Body() createWishlistGameDto: CreateWishlistGameDto,
+    @Param('id') userId: number
+  ): Promise<CustomResponseDto> {
+    return await this.wishlistGameService.create(userId, createWishlistGameDto);
+  };
 
-  @Get()
-  findAll() {
-    return this.wishlistGameService.findAll();
-  }
+  @Get('user/:id')
+  async findAll(@Param('id') userId: number): Promise<WishlistGame []> {
+    return await this.wishlistGameService.findAll(userId);
+  };
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.wishlistGameService.findOne(+id);
-  }
+  @Delete('user/:id/:slug')
+  async remove(@Param('id') userId: number, @Param('slug') slug: string): Promise<CustomResponseDto> {
+    return await this.wishlistGameService.remove(userId, slug);
+  };
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWishlistGameDto: UpdateWishlistGameDto) {
-    return this.wishlistGameService.update(+id, updateWishlistGameDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.wishlistGameService.remove(+id);
-  }
+  @Get('user/:id/:slug')
+  async check(@Param('id') userId: number, @Param('slug') slug: string): Promise<boolean> {
+    return await this.wishlistGameService.check(userId, slug);
+  };
 }

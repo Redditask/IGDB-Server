@@ -3,20 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
 import { Review } from "../../review/entities/review.entity";
 import { LibraryGame } from "../../library-game/entities/library-game.entity";
 import { WishlistGame } from "../../wishlist-game/entities/wishlist-game.entity";
-import { Token } from 'src/token/entities/token.entity';
+import { BaseEntity } from "../../database/entities/baseEntity";
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends BaseEntity<User>{
   @Column()
   username: string;
 
@@ -32,7 +27,7 @@ export class User {
   @Column()
   activationLink: string;
 
-  @Column({type: "json", array: true})
+  @Column({type: "json", nullable: true})
   platforms: JSON;
 
   @CreateDateColumn()
@@ -50,6 +45,6 @@ export class User {
   @OneToMany(() => WishlistGame, (wishlistGame) => wishlistGame.user, { onDelete: "CASCADE" })
   wishlist_games: WishlistGame [];
 
-  @OneToOne(() => Token, (token) => token.user, { onDelete: "CASCADE" })
-  token: Token;
+  @Column()
+  refreshToken: string;
 }

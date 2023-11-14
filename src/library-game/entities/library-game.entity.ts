@@ -1,11 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
+import { Column, Entity, ManyToOne, JoinColumn } from "typeorm";
 import { User } from "../../user/entities/user.entity";
+import { BaseEntity } from "../../database/entities/baseEntity";
 
 @Entity()
-export class LibraryGame {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class LibraryGame extends BaseEntity<LibraryGame>{
   @ManyToOne(() => User, (user) => user.library_games)
   @JoinColumn({name: "user_id"})
   user: User;
@@ -25,9 +23,9 @@ export class LibraryGame {
   @Column()
   metacritic: number;
 
-  @Column({type: "json", array: true})
+  @Column({type: "json"})
   genres: JSON;
 
-  @Column({type: "json", array: true})
+  @Column({type: "json"})
   parent_platforms: JSON;
 }

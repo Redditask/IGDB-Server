@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { LibraryGameService } from './library-game.service';
-import { CreateLibraryGameDto } from './dto/create-library-game.dto';
-import { UpdateLibraryGameDto } from './dto/update-library-game.dto';
+import { CreateLibraryGameDto } from "./dto/create-library-game.dto";
+import { LibraryGame } from "./entities/library-game.entity";
+import { CustomResponseDto } from "../database/dto/custom-response.dto";
 
-@Controller('library-game')
+@Controller('library-games')
 export class LibraryGameController {
   constructor(private readonly libraryGameService: LibraryGameService) {}
 
-  @Post()
-  create(@Body() createLibraryGameDto: CreateLibraryGameDto) {
-    return this.libraryGameService.create(createLibraryGameDto);
-  }
+  @Post('user/:id')
+  async create(
+    @Body() createLibraryGameDto: CreateLibraryGameDto,
+    @Param('id') userId: number
+  ): Promise<CustomResponseDto> {
+    return await this.libraryGameService.create(userId, createLibraryGameDto);
+  };
 
-  @Get()
-  findAll() {
-    return this.libraryGameService.findAll();
-  }
+  @Get('user/:id')
+  async findAll(@Param('id') userId: number): Promise<LibraryGame []> {
+    return await this.libraryGameService.findAll(userId);
+  };
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.libraryGameService.findOne(+id);
-  }
+  @Delete('user/:id/:slug')
+  async remove(@Param('id') userId: number, @Param('slug') slug: string): Promise<CustomResponseDto> {
+    return await this.libraryGameService.remove(userId, slug);
+  };
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLibraryGameDto: UpdateLibraryGameDto) {
-    return this.libraryGameService.update(+id, updateLibraryGameDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.libraryGameService.remove(+id);
-  }
+  @Get('user/:id/:slug')
+  async check(@Param('id') userId: number, @Param('slug') slug: string): Promise<boolean> {
+    return await this.libraryGameService.check(userId, slug);
+  };
 }

@@ -27,9 +27,9 @@ export class CreateWishlistGameDto {
 
   @IsJSON()
   @ValidateNested({ each: true })
-  genres: JSON [];
+  genres: JSON;
 
   @IsJSON()
   @ValidateNested({ each: true })
-  parent_platforms: JSON [];
+  parent_platforms: JSON;
 }

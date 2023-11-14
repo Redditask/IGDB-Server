@@ -1,10 +1,6 @@
-import { IsInt, IsJSON, IsNotEmpty, IsString, Min, ValidateNested } from "class-validator";
+import { IsInt, IsJSON, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 
 export class CreateLibraryGameDto {
-  @IsInt()
-  @Min(1)
-  userId: number;
-
   @IsString()
   @IsNotEmpty()
   slug: string;
@@ -27,9 +23,9 @@ export class CreateLibraryGameDto {
 
   @IsJSON()
   @ValidateNested({ each: true })
-  genres: JSON [];
+  genres: JSON;
 
   @IsJSON()
   @ValidateNested({ each: true })
-  parent_platforms: JSON [];
+  parent_platforms: JSON;
 }

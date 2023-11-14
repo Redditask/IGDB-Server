@@ -7,9 +7,9 @@ async function bootstrap() {
 }
 bootstrap();
 
-//  updateDto разобраться
-
 // ToDo:
+//  ошибки добавить
+//  как-то объединить findAll library и wishlist-games
 //  больше валидаторов добавить
 //  platforms в user entity зарефакторить
 //  ^ аналогично с genres, parent_platforms в games
