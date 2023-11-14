@@ -4,7 +4,7 @@ import { BaseEntity } from "../../database/entities/baseEntity";
 
 @Entity()
 export class LibraryGame extends BaseEntity<LibraryGame>{
-  @ManyToOne(() => User, (user) => user.library_games)
+  @ManyToOne(() => User, (user: User) => user.library_games)
   @JoinColumn({name: "user_id"})
   user: User;
 

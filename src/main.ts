@@ -9,6 +9,7 @@ bootstrap();
 
 // ToDo:
 //  ошибки добавить
+//  доставать юзера из auth мидллвейра
 //  как-то объединить findAll library и wishlist-games
 //  больше валидаторов добавить
 //  platforms в user entity зарефакторить

@@ -36,13 +36,19 @@ export class User extends BaseEntity<User>{
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Review, (review) => review.user, { onDelete: "CASCADE" })
+  @OneToMany(() => Review, (review: Review) => review.user, {
+    onDelete: "CASCADE"
+  })
   review: Review;
 
-  @OneToMany(() => LibraryGame, (libraryGame) => libraryGame.user, { onDelete: "CASCADE" })
+  @OneToMany(() => LibraryGame, (libraryGame: LibraryGame) => libraryGame.user, {
+    onDelete: "CASCADE"
+  })
   library_games: LibraryGame [];
 
-  @OneToMany(() => WishlistGame, (wishlistGame) => wishlistGame.user, { onDelete: "CASCADE" })
+  @OneToMany(() => WishlistGame, (wishlistGame: WishlistGame) => wishlistGame.user, {
+    onDelete: "CASCADE"
+  })
   wishlist_games: WishlistGame [];
 
   @Column()

@@ -4,7 +4,7 @@ import { BaseEntity } from "../../database/entities/baseEntity";
 
 @Entity()
 export class Review extends BaseEntity<Review>{
-  @ManyToOne(() => User, (user) => user.review)
+  @ManyToOne(() => User, (user: User) => user.review)
   @JoinColumn({name: "username"})
   user: User;
 
@@ -18,8 +18,8 @@ export class Review extends BaseEntity<Review>{
   rating: number;
 
   @Column({array: true})
-  likedUsers: string;
+  likedUsers: string [];
 
   @Column({array: true})
-  dislikedUsers: string;
+  dislikedUsers: string [];
 }

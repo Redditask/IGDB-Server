@@ -3,13 +3,6 @@ import { IsInt, IsNotEmpty, IsString, Max, MaxLength, Min, MinLength } from "cla
 export class CreateReviewDto {
   @IsString()
   @IsNotEmpty()
-  username: string;
-
-  @IsString()
-  @IsNotEmpty()
-  slug: string;
-
-  @IsString()
   @MinLength(15, {
     message: "Review is too short",
   })

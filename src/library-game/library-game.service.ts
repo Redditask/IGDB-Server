@@ -13,7 +13,7 @@ export class LibraryGameService {
     private libraryGameRepository: Repository<LibraryGame>,
 
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
   ) {}
 
   async create(userId: number, createLibraryGameDto: CreateLibraryGameDto){

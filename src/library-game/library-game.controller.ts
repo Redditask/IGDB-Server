@@ -13,21 +13,25 @@ export class LibraryGameController {
     @Body() createLibraryGameDto: CreateLibraryGameDto,
     @Param('id') userId: number
   ): Promise<CustomResponseDto> {
+
     return await this.libraryGameService.create(userId, createLibraryGameDto);
   };
 
   @Get('user/:id')
   async findAll(@Param('id') userId: number): Promise<LibraryGame []> {
+
     return await this.libraryGameService.findAll(userId);
   };
 
   @Delete('user/:id/:slug')
   async remove(@Param('id') userId: number, @Param('slug') slug: string): Promise<CustomResponseDto> {
+
     return await this.libraryGameService.remove(userId, slug);
   };
 
   @Get('user/:id/:slug')
   async check(@Param('id') userId: number, @Param('slug') slug: string): Promise<boolean> {
+
     return await this.libraryGameService.check(userId, slug);
   };
 }
